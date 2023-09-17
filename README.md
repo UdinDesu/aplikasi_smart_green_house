@@ -1,4 +1,4 @@
-# aplikasi_smart_green_house
+# Aplikasi Smart Green House
 
 TIM 5 Workshop Aplikasi Mobile
 
