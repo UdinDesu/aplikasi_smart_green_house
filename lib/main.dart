@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Menghilangkan teks "Debug"
+      debugShowCheckedModeBanner: false, // Maenghilangkan teks "Debug"
       home: SplashScreen(), // Gunakan SplashScreen sebagai halaman awal
     );
   }
