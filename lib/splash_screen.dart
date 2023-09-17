@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: const [
-              Color(0xFF09562B), // Warna gradient dari bawah hijau tua (#09562B)
-              Color(0xFF3FAF65), // Warna gradient hingga ke atas hijau terang (#3FAF65)
+              Color(0xFF74B557), // Warna gradient Atas
+              Color(0xFFA6DD8E), // Warna gradient Bawah
             ],
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
@@ -51,12 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const CircularProgressIndicator(), // Tampilkan indikator loading
               const SizedBox(height: 20),
-              const Text(
-                'Aplikasi sedang memuat...',
-                style: TextStyle(
-                  color: Colors.white, // Ubah warna teks menjadi putih
-                ),
-              ),
             ],
           ),
         ),

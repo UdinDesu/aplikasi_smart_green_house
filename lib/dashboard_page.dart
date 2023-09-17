@@ -18,13 +18,25 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null, // Menghilangkan header
+      appBar: AppBar(
+        backgroundColor: Color(0xFF5CA23D), // Ubah warna latar belakang AppBar
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu), // Icon tiga garis horizontal
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF09562B), // Warna gradient dari bawah hijau tua (#09562B)
-              Color(0xFF3FAF65), // Warna gradient hingga ke atas hijau terang (#3FAF65)
+              Color(0xFF74B557), // Warna gradient Atas
+              Color(0xFFA6DD8E), // Warna gradient Bawah
             ],
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
