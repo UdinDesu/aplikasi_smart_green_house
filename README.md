@@ -1,6 +1,6 @@
 # Nama Aplikasi Anda
 
-![Logo Aplikasi](img/icon.png) <!-- Ganti dengan link gambar logo aplikasi Anda -->
+![Logo Aplikasi](assets/image/icon.png) <!-- Ganti dengan link gambar logo aplikasi Anda -->
 
 Deskripsi singkat atau tagline proyek Anda.
 
