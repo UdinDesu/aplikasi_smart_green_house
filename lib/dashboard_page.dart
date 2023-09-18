@@ -19,13 +19,15 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Jadikan AppBar transparan
-        leading: IconButton(
-          icon: Icon(Icons.menu), // Icon tiga garis horizontal
-          onPressed: () {
-            // Tambahkan fungsi aksi untuk menu di sini
-          },
-        ),
+        backgroundColor: Color(0xFFB6EB9D), // Jadikan App Bar memiliki warna latar belakang yang sama
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu), // Icon tiga garis horizontal di App Bar
+            onPressed: () {
+              // Tambahkan fungsi aksi untuk menu di sini
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
