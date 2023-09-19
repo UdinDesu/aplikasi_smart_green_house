@@ -1,59 +1,68 @@
 import 'package:flutter/material.dart';
 
-class MenuPage extends StatelessWidget {
+void main() {
+  runApp(const MenuPageApp());
+}
+
+class MenuPageApp extends StatelessWidget {
+  const MenuPageApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Menu Page'),
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
-      body: Center(
-        child: GridView.count(
-          crossAxisCount: 2, // Menyusun 2 kolom
-          mainAxisSpacing: 20.0, // Jarak vertikal antar item
-          crossAxisSpacing: 20.0, // Jarak horizontal antar item
-          padding: EdgeInsets.all(20.0), // Padding keseluruhan GridView
-          children: <Widget>[
-            _buildMenuItem(context, 'Pilihan 1', Icons.access_alarm),
-            _buildMenuItem(context, 'Pilihan 2', Icons.accessibility),
-            _buildMenuItem(context, 'Pilihan 3', Icons.airplanemode_active),
-            _buildMenuItem(context, 'Pilihan 4', Icons.access_alarm),
-            _buildMenuItem(context, 'Pilihan 5', Icons.accessibility),
-          ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Menu Page'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              MenuPage(),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildMenuItem(BuildContext context, String title, IconData icon) {
-    return GestureDetector(
-      onTap: () {
-        // Tambahkan aksi yang sesuai ketika item dipilih
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.green, // Warna latar belakang kotak
-          borderRadius: BorderRadius.circular(10.0), // Bentuk border kotak
+class MenuPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context)
+          .size
+          .height, // Menggunakan tinggi layar yang tersedia
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(0.00, -1.00),
+          end: Alignment(0, 1),
+          colors: [Color(0xFF9DEBB2), Color(0xFFB6EB9D), Color(0xFF83B51A)],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 40.0, // Ukuran ikon
-              color: Colors.white, // Warna ikon
-            ),
-            SizedBox(height: 10.0), // Jarak antara ikon dan teks
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white, // Warna teks
-                fontSize: 18.0, // Ukuran teks
-                fontWeight: FontWeight.bold, // Ketebalan teks
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 20.0, // Sesuaikan posisi horizontal tombol kembali
+            top: 40.0, // Sesuaikan posisi vertikal tombol kembali
+            child: Material(
+              // Tambahkan Material di sekitar IconButton
+              type: MaterialType.transparency,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke halaman sebelumnya
+                },
               ),
             ),
-          ],
-        ),
+          ),
+          // ... Widget lainnya ...
+        ],
       ),
     );
   }

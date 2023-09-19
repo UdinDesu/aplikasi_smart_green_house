@@ -20,10 +20,10 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFB6EB9D), // Jadikan App Bar memiliki warna latar belakang yang sama
+        backgroundColor: const Color(0xFFB6EB9D), // Sesuaikan dengan warna yang diinginkan
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.menu), // Icon tiga garis horizontal di App Bar
+            icon: const Icon(Icons.menu), // Icon tiga garis horizontal di App Bar
             onPressed: () {
               Navigator.of(context).push(
                 PageRouteBuilder(
@@ -48,62 +48,12 @@ class DashboardPage extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF1B3B0B), // Warna gradient Bawah
-              Color(0xFFB6EB9D), // Warna gradient Atas
+              const Color(0xFF9DEBB3), // Warna gradient pertama
+              const Color(0xFFB6EB9D), // Warna gradient kedua
+              const Color(0xFF84B51A), // Warna gradient ketiga
             ],
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Selamat datang di Dashboard!',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Warna teks putih
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Tambahkan fungsi aksi di sini
-                },
-                child: Text('Tombol Aksi'),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Card(
-                elevation: 5.0,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Info Penting',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        style: TextStyle(color: Colors.black), // Warna teks hitam
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),
