@@ -15,14 +15,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
       const Duration(seconds: 3), // Mengubah waktu menjadi 3 detik
-          () {
+      () {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => DashboardPage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                DashboardPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               const begin = 0.0;
               const end = 1.0;
-              var fadeAnimation = Tween(begin: begin, end: end).animate(animation);
+              var fadeAnimation =
+                  Tween(begin: begin, end: end).animate(animation);
 
               return FadeTransition(
                 opacity: fadeAnimation,
@@ -56,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/images/logo.png', // Sesuaikan dengan path ke gambar logo Anda
+                'images/logo.png', // Sesuaikan dengan path ke gambar Anda
                 width: 100, // Sesuaikan dengan lebar yang Anda inginkan
                 height: 100, // Sesuaikan dengan tinggi yang Anda inginkan
               ),

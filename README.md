@@ -1,6 +1,6 @@
 # Aplikasi Smart Green House
 
-![Logo Aplikasi](assets/images/logo.png) <!-- Ganti dengan link gambar logo aplikasi Anda -->
+![Logo Aplikasi](lib/assets/images/logo.png) <!-- Ganti dengan link gambar logo aplikasi Anda -->
 
 
 
