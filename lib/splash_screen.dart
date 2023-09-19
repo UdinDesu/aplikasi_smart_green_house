@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dashboard_page.dart';
-/*import 'package:transform_matrix/transform_matrix.dart';*/
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,14 +12,41 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late DecorationTween _tween;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 5),
       vsync: this,
     )..repeat(); // Membuat animasi berulang
+
+    // Mengatur transisi dekorasi dari putih ke linear gradient
+    _tween = DecorationTween(
+      begin: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFFFFFFFF), // Warna gradient pertama (putih)
+            const Color(0xFFFFFFFF), // Warna gradient kedua (putih)
+            const Color(0xFFFFFFFF), // Warna gradient ketiga (putih)
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+      ),
+      end: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFFB0FF09), // Warna gradient pertama
+            const Color(0xFFFFFFFF), // Warna gradient kedua
+            const Color(0xFFB9ED4D), // Warna gradient ketiga
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+      ),
+    );
 
     Timer(
       const Duration(seconds: 3), // Mengubah waktu menjadi 3 detik
@@ -44,6 +70,9 @@ class _SplashScreenState extends State<SplashScreen>
             transitionDuration: const Duration(milliseconds: 400),
           ),
         );
+
+        // Memulai transisi latar belakang
+        _animationController.forward();
       },
     );
   }
@@ -51,58 +80,55 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Menghilangkan tulisan "Debug"
-      theme: ThemeData.dark(), // Menghilangkan pengaturan scaffoldBackgroundColor
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
       home: Scaffold(
-        appBar: null, // Menghilangkan header
-        body: Container(
-          width: double.infinity, // Lebar container mengisi seluruh lebar layar
-          height: double.infinity, // Tinggi container mengisi seluruh tinggi layar
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF84B51A), // Warna pertama
-                const Color(0xFFB6EB9D), // Warna kedua
-                const Color(0xFF9DEBB3), // Warna ketiga
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AnimatedBuilder(
-                  animation: _animationController,
-                  builder: (context, child) {
-                    final transformationMatrix = Matrix4.identity()
-                      ..setEntry(3, 2, 0.001) // Perspektif efek
-                      ..rotateY(2 * 3.14159265359 * _animationController.value); // Putaran 3D
-
-                    return Transform(
-                      transform: transformationMatrix,
-                      alignment: FractionalOffset.center,
-                      child: Image.asset(
-                        'assets/images/logo.png', // Sesuaikan dengan path ke gambar Anda
-                        width: 100, // Sesuaikan dengan lebar yang Anda inginkan
-                        height: 100, // Sesuaikan dengan tinggi yang Anda inginkan
+        appBar: null,
+        body: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            // Menggunakan tween untuk animasi dekorasi
+            final decoration = _tween.animate(_animationController).value;
+            return Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: decoration, // Menggunakan dekorasi yang diatur oleh tween
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (context, child) {
+                        final double rotationValue =
+                            2 * 3.14159265359 * _animationController.value;
+                        return Transform(
+                          transform: Matrix4.identity()
+                            ..setEntry(3, 2, 0.001)
+                            ..rotateY(rotationValue),
+                          alignment: FractionalOffset.center,
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            width: 100,
+                            height: 100,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Smart Green House',
+                      style: TextStyle(
+                        fontSize: 44.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown,
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20), // Beri jarak antara gambar dan teks
-                Text(
-                  'Selamat datang di Aplikasi',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white, // Warna teks putih
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -110,7 +136,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    _animationController.dispose(); // Jangan lupa membuang controller saat tidak digunakan
+    _animationController.dispose();
     super.dispose();
   }
 }
