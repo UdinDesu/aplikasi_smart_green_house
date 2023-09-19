@@ -12,4 +12,4 @@ Deskripsi lebih rinci tentang proyek Anda, apa yang ingin Anda capai, dan apa ya
 
 - Fitur 1: Jelaskan fitur utama pertama
 - Fitur 2: Jelaskan fitur utama kedua
-- Fitur 3: Jelaskan fitur utama ketiga
+- Fitur 3: Jelaskan fitur utama ketigaa
