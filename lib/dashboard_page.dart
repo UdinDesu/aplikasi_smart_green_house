@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'menu_page.dart'; // Sesuaikan dengan path menu_page.dart
 
 void main() {
   runApp(DashboardApp());
@@ -24,7 +25,21 @@ class DashboardPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.menu), // Icon tiga garis horizontal di App Bar
             onPressed: () {
-              // Tambahkan fungsi aksi untuk menu di sini
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => MenuPage(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(1.0, 0.0);
+                    const end = Offset.zero;
+                    const curve = Curves.easeInOut;
+                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                    var offsetAnimation = animation.drive(tween);
+
+                    return SlideTransition(position: offsetAnimation, child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 500),
+                ),
+              );
             },
           ),
         ],

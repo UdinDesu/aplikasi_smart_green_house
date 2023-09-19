@@ -17,8 +17,19 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3), // Mengubah waktu menjadi 3 detik
           () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (BuildContext context) =>DashboardPage(),
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => DashboardPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = 0.0;
+              const end = 1.0;
+              var fadeAnimation = Tween(begin: begin, end: end).animate(animation);
+
+              return FadeTransition(
+                opacity: fadeAnimation,
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 400),
           ),
         );
       },
@@ -49,8 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 100, // Sesuaikan dengan lebar yang Anda inginkan
                 height: 100, // Sesuaikan dengan tinggi yang Anda inginkan
               ),
-              const CircularProgressIndicator(), // Tampilkan indikator loading
-              const SizedBox(height: 20),
+              const SizedBox(height: 20), // Beri jarak antara gambar dan teks
             ],
           ),
         ),
