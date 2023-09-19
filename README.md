@@ -1,6 +1,6 @@
 # Aplikasi Smart Green House
 
-![Logo Aplikasi]<img src="assets/images/logo.png" alt="Logo Aplikasi" width="200" height="150"/>
+<img src="assets/images/logo.png" alt="Logo Aplikasi" width="150" height="200"/>
 
 
 
