@@ -1,42 +1,15 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MenuPageApp());
+  runApp(MenuPageApp());
 }
 
 class MenuPageApp extends StatelessWidget {
-  const MenuPageApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Menu Page'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              MenuPage(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context)
-          .size
-          .height, // Menggunakan tinggi layar yang tersedia
+      height: MediaQuery.of(context).size.height, // Menggunakan tinggi layar yang tersedia
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -59,6 +32,82 @@ class MenuPage extends StatelessWidget {
                   Navigator.pop(context); // Kembali ke halaman sebelumnya
                 },
               ),
+            ),
+          ),
+          Container(
+            width: 466,
+            height: 336,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 68,
+                  top: 0,
+                  child: Opacity(
+                    opacity: 0.10,
+                    child: Container(
+                      width: 398,
+                      height: 222,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFF222042),
+                        shape: StadiumBorder(), // Menggunakan StadiumBorder untuk bentuk oval
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 33,
+                  top: 70,
+                  child: Opacity(
+                    opacity: 0.10,
+                    child: Container(
+                      width: 398,
+                      height: 222,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFF222042),
+                        shape: StadiumBorder(), // Menggunakan StadiumBorder untuk bentuk oval
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  top: 114,
+                  child: Opacity(
+                    opacity: 0.02,
+                    child: Container(
+                      width: 398,
+                      height: 222,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFF222042),
+                        shape: StadiumBorder(), // Menggunakan StadiumBorder untuk bentuk oval
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 466,
+            height: 336,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 68,
+                  top: 400, // Sesuaikan posisi vertikal ke kiri bawah
+                  child: Opacity(
+                    opacity: 0.10,
+                    child: Container(
+                      width: 398,
+                      height: 222,
+                      decoration: ShapeDecoration(
+                        color: Color(0xFF222042),
+                        shape: StadiumBorder(), // Menggunakan StadiumBorder untuk bentuk oval
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           // ... Widget lainnya ...
