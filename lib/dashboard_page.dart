@@ -27,7 +27,7 @@ class DashboardPage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => MenuPage(),
+                  pageBuilder: (context, animation, secondaryAnimation) => MenuPageApp(),
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                     const begin = Offset(1.0, 0.0);
                     const end = Offset.zero;
