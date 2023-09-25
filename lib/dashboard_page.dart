@@ -65,14 +65,14 @@ class DashboardPage extends StatelessWidget {
                 image,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: double.infinity, // Mengisi ruang vertikal
+                height: double.infinity,
               );
             }).toList(),
             options: CarouselOptions(
               autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
+              autoPlayInterval: Duration(seconds: 5),
               enlargeCenterPage: true,
-              viewportFraction: 1.0, // Mengisi seluruh lebar
+              viewportFraction: 1.0,
               aspectRatio: 16 / 9,
             ),
           ),
@@ -83,7 +83,7 @@ class DashboardPage extends StatelessWidget {
             child: Text(
               'Informasi Kontrol Aplikasi',
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: 22.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -96,15 +96,41 @@ class DashboardPage extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: GridView.count(
                 crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
+                crossAxisSpacing: 13.0,
+                mainAxisSpacing: 13.0,
                 children: [
-                  // Tambahkan widget di sini (kotak tampilan)
-                  BuildInfoBox("Suhu Ruangan", 'assets/icon/temp.png', context),
                   BuildInfoBox(
-                      "Intensitas Cahaya", 'assets/icon/light.png', context),
-                  BuildInfoBox("Kelembapan", 'assets/icon/soil.png', context),
-                  BuildInfoBox("Kadar Air", 'assets/icon/water.png', context),
+                    "Suhu Ruangan",
+                    'assets/icon/temp.png',
+                    context,
+                    Colors.black,
+                    "Suhu akan di tunjukan dalam satuan Celsius, suhu ini mencangkup 1 ruangan",
+                    Colors.white,
+                  ),
+                  BuildInfoBox(
+                    "Intensitas Cahaya",
+                    'assets/icon/light.png',
+                    context,
+                    Colors.black,
+                    "Intensitas Cahaya di tunjukan dalam satuan persen, Intensitas Cahaya ini mencangkup 1 ruangan",
+                    Colors.white,
+                  ),
+                  BuildInfoBox(
+                    "Kelembapan",
+                    'assets/icon/soil.png',
+                    context,
+                    Colors.black,
+                    "Kelembapan di tunjukan dalam satuan persen, Kelembapan ini mencangkup 1 ruangan",
+                    Colors.white,
+                  ),
+                  BuildInfoBox(
+                    "Kadar Air",
+                    'assets/icon/water.png',
+                    context,
+                    Colors.black,
+                    "Kadar air di tunjukkan dalam satuan persen, Kadar air ini mencangkup tanah yang berada di ruangan tersebut ",
+                    Colors.white,
+                  ),
                 ],
               ),
             ),
@@ -114,8 +140,14 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk membuat kotak tampilan informasi yang dapat ditekan
-  Widget BuildInfoBox(String title, String imagePath, BuildContext context) {
+  Widget BuildInfoBox(
+      String title,
+      String imagePath,
+      BuildContext context,
+      Color textColor,
+      String detailInfo,
+      Color backgroundColor,
+      ) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -132,9 +164,16 @@ class DashboardPage extends StatelessWidget {
                     height: 80.0,
                   ),
                   SizedBox(height: 8.0),
-                  Text(
-                    "Detail informasi di sini...",
-                    style: TextStyle(fontSize: 16.0),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      detailInfo,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black, // Ganti warna teks sesuai kebutuhan
+                      ),
+                      textAlign: TextAlign.left, // Mengatur rata kiri
+                    ),
                   ),
                 ],
               ),
@@ -146,13 +185,14 @@ class DashboardPage extends StatelessWidget {
                   child: Text('Tutup'),
                 ),
               ],
+              backgroundColor: backgroundColor, // Mengatur warna latar belakang
             );
           },
         );
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: backgroundColor, // Mengatur warna latar belakang
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -178,11 +218,11 @@ class DashboardPage extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: textColor,
               ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left, // Mengatur rata kiri
             ),
           ],
         ),

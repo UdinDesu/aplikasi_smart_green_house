@@ -57,14 +57,18 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 100,
               ),
               const SizedBox(height: 20),
-              Text(
-                'Smart Green House',
-                style: TextStyle(
-                  fontSize: 44.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green, // Warna hijau
+              Center(
+                child: Text(
+                  'Smart Green House',
+                  style: TextStyle(
+                    fontFamily: 'Title',
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
+              )
             ],
           ),
         ),
