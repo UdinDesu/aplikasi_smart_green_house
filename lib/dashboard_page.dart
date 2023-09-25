@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'menu_page.dart'; // Sesuaikan dengan path menu_page.dart
 import 'package:carousel_slider/carousel_slider.dart';
+import 'menu_page.dart';
 
 void main() {
   runApp(DashboardApp());
@@ -186,20 +186,6 @@ class DashboardPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MenuPageApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Menu Page"),
-      ),
-      body: Center(
-        child: Text("Ini adalah halaman menu"),
       ),
     );
   }
