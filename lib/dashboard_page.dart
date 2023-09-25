@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'menu_page.dart'; // Sesuaikan dengan path menu_page.dart
 import 'package:carousel_slider/carousel_slider.dart';
+
 void main() {
   runApp(DashboardApp());
 }
@@ -100,7 +101,8 @@ class DashboardPage extends StatelessWidget {
                 children: [
                   // Tambahkan widget di sini (kotak tampilan)
                   BuildInfoBox("Suhu Ruangan", 'assets/icon/temp.png', context),
-                  BuildInfoBox("Intensitas Cahaya", 'assets/icon/light.png', context),
+                  BuildInfoBox(
+                      "Intensitas Cahaya", 'assets/icon/light.png', context),
                   BuildInfoBox("Kelembapan", 'assets/icon/soil.png', context),
                   BuildInfoBox("Kadar Air", 'assets/icon/water.png', context),
                 ],
