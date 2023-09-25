@@ -19,8 +19,8 @@ class DashboardApp extends StatelessWidget {
 class DashboardPage extends StatelessWidget {
   final List<String> images = [
     'assets/images/banner1.png',
-    'assets/image2.jpg',
-    'assets/image3.jpg',
+    'assets/images/banner2.png',
+    'assets/images/banner3.png',
   ];
 
   @override
