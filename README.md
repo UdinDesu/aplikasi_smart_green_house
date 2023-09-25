@@ -6,10 +6,11 @@
 
 ## Gambaran Proyek
 
-Deskripsi lebih rinci tentang proyek Anda, apa yang ingin Anda capai, dan apa yang membuatnya istimewa. Jelaskan masalah atau kebutuhan yang Anda selesaikan dengan proyek ini.
+Smart Greenhouse merupakan aplikasi berbasis IoT yang berfokus pada pengecekan suhu, kelembapan tanah, intensitas cahaya dan kadar air pada tanaman yang dapat dikenalikan melalui aplikasi.
 
 ## Fitur Utama
-
-- Fitur 1: Jelaskan fitur utama pertama
-- Fitur 2: Jelaskan fitur utama kedua
-- Fitur 3: Jelaskan fitur utama ketigaa
+Didalam aplikasi ini, pengguna dapat melakukan monitoring dan kontrol terhadap kondisi yang berada di Smart Green House, hal hal yang bisa di monitoring dan di kontrol adalah
+- Suhu Ruangan
+- Intensitas Cahaya
+- Kadar Air
+- Kelembapan Tanah
