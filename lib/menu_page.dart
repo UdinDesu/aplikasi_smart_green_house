@@ -15,6 +15,12 @@ class MenuPageApp extends StatelessWidget {
       routes: {
         '/add_menu': (context) => AddMenuApp(),
       },
+      onUnknownRoute: (settings) {
+        // Mengembalikan halaman NotFoundPage jika rute tidak dikenali
+        return MaterialPageRoute(
+          builder: (context) => NotFoundPage(),
+        );
+      },
     );
   }
 }
@@ -75,6 +81,22 @@ class MenuPage extends StatelessWidget {
         ],
       ),
       body: Container(), // Tambahkan konten Anda di sini
+    );
+  }
+}
+
+// Halaman NotFoundPage untuk menangani rute yang tidak dikenali
+class NotFoundPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E420D),
+        title: Text('Not Found'),
+      ),
+      body: Center(
+        child: Text('Halaman tidak ditemukan.'),
+      ),
     );
   }
 }
