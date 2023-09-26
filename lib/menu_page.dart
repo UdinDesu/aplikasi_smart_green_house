@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
+import 'add_menu.dart';
 
 void main() {
   runApp(MenuPageApp());
@@ -11,52 +12,69 @@ class MenuPageApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MenuPage(),
+      routes: {
+        '/add_menu': (context) => AddMenuApp(),
+      },
     );
   }
 }
 
 class MenuPage extends StatelessWidget {
-  final List<String> menuItems = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E420D),
+        title: Text('Menu'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => DashboardApp(),
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => DashboardApp(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(-1.0, 0.0); // Geser dari kanan ke kiri
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOut;
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 500),
               ),
             );
           },
         ),
         actions: <Widget>[
+          PopupMenuButton<String>(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'add',
+                  child: Text('Add'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'select',
+                  child: Text('Select'),
+                ),
+              ];
+            },
+            onSelected: (value) {
+              if (value == 'add') {
+                Navigator.pushNamed(context, '/add_menu');
+              } else if (value == 'select') {
+                // Tambahkan logika untuk tindakan "Select" di sini
+              }
+            },
+          ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: menuItems.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(menuItems[index]),
-            trailing: PopupMenuButton<String>(
-              onSelected: (value) {
-                print('Pilihan yang dipilih: $value');
-              },
-              itemBuilder: (context) {
-                return menuItems.map((item) {
-                  return PopupMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList();
-              },
-            ),
-          );
-        },
-      ),
+      body: Container(), // Tambahkan konten Anda di sini
     );
   }
 }

@@ -35,6 +35,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_neumorphic: ^3.0.0
   carousel_slider: ^4.2.1
+  shared_preferences: ^2.0.10
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -85,9 +87,13 @@ flutter:
     - family: Plant2
       fonts:
         - asset: assets/fonts/GreenHouse.otf
-    - family: Title
+    - family: BebasNeue
       fonts:
         - asset: assets/fonts/BebasNeue.ttf
+    - family: Coolvectica
+      fonts:
+        - asset: assets/fonts/CoolveticaRG.otf
+        - asset: assets/fonts/CoolveticaCondensedRG.otf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

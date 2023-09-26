@@ -28,6 +28,7 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E420D),
+        title: Text('Dashboard'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.menu),
@@ -78,16 +79,16 @@ class DashboardPage extends StatelessWidget {
           ),
           Container(
             color: const Color(0xFF1E420D),
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(12.0),
             width: double.infinity,
             child: Text(
-              'Informasi Kontrol Aplikasi',
+              'INFORMASI KONTROL APLIKASI',
               style: TextStyle(
                 fontSize: 22.0,
-                fontWeight: FontWeight.bold,
+                fontFamily: 'Coolvectica',
                 color: Colors.white,
               ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
             ),
           ),
           Expanded(
@@ -169,10 +170,10 @@ class DashboardPage extends StatelessWidget {
                     child: Text(
                       detailInfo,
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 17.0,
                         color: Colors.black, // Ganti warna teks sesuai kebutuhan
                       ),
-                      textAlign: TextAlign.left, // Mengatur rata kiri
+                      textAlign: TextAlign.justify, // Mengatur rata kiri
                     ),
                   ),
                 ],
