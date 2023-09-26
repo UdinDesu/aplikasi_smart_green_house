@@ -23,25 +23,12 @@ class AddMenu extends StatelessWidget {
         backgroundColor: const Color(0xFF1E420D),
         title: Text('Add Menu'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back), // Ikona anak panah kembali
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) => MenuPage(),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  const begin = Offset(0.0, 0.0); // Geser dari kanan ke kiri
-                  const end = Offset.zero;
-                  const curve = Curves.easeInOut;
-                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                  var offsetAnimation = animation.drive(tween);
-
-                  return SlideTransition(
-                    position: offsetAnimation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 500),
+            // Navigasi kembali ke MenuPage dengan animasi
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => MenuPage(),
               ),
             );
           },
