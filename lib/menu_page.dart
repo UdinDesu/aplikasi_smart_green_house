@@ -16,7 +16,6 @@ class MenuPageApp extends StatelessWidget {
         '/add_menu': (context) => AddMenuApp(),
       },
       onUnknownRoute: (settings) {
-        // Mengembalikan halaman NotFoundPage jika rute tidak dikenali
         return MaterialPageRoute(
           builder: (context) => NotFoundPage(),
         );
@@ -40,7 +39,7 @@ class MenuPage extends StatelessWidget {
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) => DashboardApp(),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  const begin = Offset(-1.0, 0.0); // Geser dari kanan ke kiri
+                  const begin = Offset(-1.0, 0.0);
                   const end = Offset.zero;
                   const curve = Curves.easeInOut;
                   var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
@@ -74,18 +73,16 @@ class MenuPage extends StatelessWidget {
               if (value == 'add') {
                 Navigator.pushNamed(context, '/add_menu');
               } else if (value == 'select') {
-                // Tambahkan logika untuk tindakan "Select" di sini
               }
             },
           ),
         ],
       ),
-      body: Container(), // Tambahkan konten Anda di sini
+      body: Container(),
     );
   }
 }
 
-// Halaman NotFoundPage untuk menangani rute yang tidak dikenali
 class NotFoundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

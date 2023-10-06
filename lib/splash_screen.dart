@@ -4,18 +4,15 @@ import 'dashboard_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
-
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     Timer(
-      const Duration(seconds: 3), // Mengubah waktu menjadi 3 detik
+      const Duration(seconds: 3),
       () {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
@@ -27,7 +24,6 @@ class _SplashScreenState extends State<SplashScreen> {
               const end = 1.0;
               var fadeAnimation =
                   Tween(begin: begin, end: end).animate(animation);
-
               return FadeTransition(
                 opacity: fadeAnimation,
                 child: child,
@@ -39,7 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
