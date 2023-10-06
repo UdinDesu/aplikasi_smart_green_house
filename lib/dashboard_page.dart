@@ -45,7 +45,6 @@ class DashboardPage extends StatelessWidget {
                     var tween = Tween(begin: begin, end: end)
                         .chain(CurveTween(curve: curve));
                     var offsetAnimation = animation.drive(tween);
-
                     return SlideTransition(
                       position: offsetAnimation,
                       child: child,
@@ -171,9 +170,9 @@ class DashboardPage extends StatelessWidget {
                       detailInfo,
                       style: TextStyle(
                         fontSize: 17.0,
-                        color: Colors.black, // Ganti warna teks sesuai kebutuhan
+                        color: Colors.black,
                       ),
-                      textAlign: TextAlign.justify, // Mengatur rata kiri
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                 ],
@@ -186,14 +185,14 @@ class DashboardPage extends StatelessWidget {
                   child: Text('Tutup'),
                 ),
               ],
-              backgroundColor: backgroundColor, // Mengatur warna latar belakang
+              backgroundColor: backgroundColor,
             );
           },
         );
       },
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor, // Mengatur warna latar belakang
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -223,7 +222,7 @@ class DashboardPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: textColor,
               ),
-              textAlign: TextAlign.left, // Mengatur rata kiri
+              textAlign: TextAlign.left,
             ),
           ],
         ),

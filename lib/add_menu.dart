@@ -23,9 +23,8 @@ class AddMenu extends StatelessWidget {
         backgroundColor: const Color(0xFF1E420D),
         title: Text('Add Menu'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Ikona anak panah kembali
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigasi kembali ke MenuPage dengan animasi
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => MenuPage(),
