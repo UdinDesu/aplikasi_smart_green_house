@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'menu_page.dart';
+import 'bottom_nav_bar.dart';
 
 void main() {
   runApp(DashboardApp());
@@ -16,7 +16,7 @@ class DashboardApp extends StatelessWidget {
   }
 }
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   final List<String> images = [
     'assets/images/banner1.png',
     'assets/images/banner2.png',
@@ -24,48 +24,37 @@ class DashboardPage extends StatelessWidget {
   ];
 
   @override
+  _DashboardPageState createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double bottomNavBarHeight = kBottomNavigationBarHeight;
+    double screenHeight = MediaQuery.of(context).size.height - bottomNavBarHeight;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E420D),
         title: Text('Dashboard'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      MenuPageApp(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0, 0.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
-                    var tween = Tween(begin: begin, end: end)
-                        .chain(CurveTween(curve: curve));
-                    var offsetAnimation = animation.drive(tween);
-                    return SlideTransition(
-                      position: offsetAnimation,
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(milliseconds: 500),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
           CarouselSlider(
-            items: images.map((image) {
+            items: widget.images.map((image) {
               return Image.asset(
                 image,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: double.infinity,
+                height: screenHeight * 0.5, // 50% of available height
               );
             }).toList(),
             options: CarouselOptions(
@@ -93,11 +82,12 @@ class DashboardPage extends StatelessWidget {
           Expanded(
             child: Container(
               color: Colors.white,
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(15.0),
               child: GridView.count(
                 crossAxisCount: 2,
-                crossAxisSpacing: 13.0,
-                mainAxisSpacing: 13.0,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 0.8, // 80% of cell height
                 children: [
                   BuildInfoBox(
                     "Suhu Ruangan",
@@ -128,7 +118,7 @@ class DashboardPage extends StatelessWidget {
                     'assets/icon/water.png',
                     context,
                     Colors.black,
-                    "Kadar air di tunjukkan dalam satuan persen, Kadar air ini mencangkup tanah yang berada di ruangan tersebut ",
+                    "Kadar air di tunjukkan dalam satuan persen, Kadar air ini mencangkup tanah yang berada di ruangan tersebut",
                     Colors.white,
                   ),
                 ],
@@ -136,6 +126,10 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -193,7 +187,7 @@ class DashboardPage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
               color: Colors.green,
@@ -201,32 +195,92 @@ class DashboardPage extends StatelessWidget {
               offset: Offset(4, 4),
             ),
           ],
-        ),
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(16.0),
-              child: Image.asset(
-                imagePath,
-                width: 80.0,
-                height: 80.0,
+      Widget BuildInfoBox(
+      String title,
+      String imagePath,
+      BuildContext context,
+      Color textColor,
+      String detailInfo,
+      Color backgroundColor,
+    ) {
+      return GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      imagePath,
+                      width: 50.0, // Mengatur lebar gambar menjadi 50 px
+                      height: 50.0, // Mengatur tinggi gambar menjadi 50 px
+                    ),
+                    SizedBox(height: 8.0),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        detailInfo,
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Tutup'),
+                  ),
+                ],
+                backgroundColor: backgroundColor,
+              );
+            },
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.green,
+                blurRadius: 4,
+                offset: Offset(4, 4),
               ),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-                color: textColor,
+            ],
+          ),
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Image.asset(
+                  imagePath,
+                  width: 50.0, // Mengatur lebar gambar menjadi 50 px
+                  height: 50.0, // Mengatur tinggi gambar menjadi 50 px
+                ),
               ),
-              textAlign: TextAlign.left,
-            ),
-          ],
+              SizedBox(height: 12.0),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-}
+      );
+    }
