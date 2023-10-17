@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'menu_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main() {
   runApp(AddMenuApp());
@@ -15,7 +17,28 @@ class AddMenuApp extends StatelessWidget {
   }
 }
 
-class AddMenu extends StatelessWidget {
+class AddMenu extends StatefulWidget {
+  @override
+  _AddMenuState createState() => _AddMenuState();
+}
+
+class _AddMenuState extends State<AddMenu> {
+  File? _image;
+  final picker = ImagePicker();
+  TextEditingController _namaTanamanController = TextEditingController();
+  TextEditingController _codeAPIController = TextEditingController();
+  TextEditingController _jumlahTanamController = TextEditingController();
+
+  Future getImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +60,36 @@ class AddMenu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Halo'),
+            ElevatedButton(
+              onPressed: getImage,
+              child: _image == null
+                  ? Text('Pilih Gambar')
+                  : Image.file(_image!),
+            ),
+            TextField(
+              controller: _namaTanamanController,
+              decoration: InputDecoration(labelText: 'Nama Tanaman'),
+            ),
+            TextField(
+              controller: _codeAPIController,
+              decoration: InputDecoration(labelText: 'Code API'),
+            ),
+            TextField(
+              controller: _jumlahTanamController,
+              decoration: InputDecoration(labelText: 'Jumlah Tanam'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Lakukan sesuatu dengan data yang dimasukkan
+                String namaTanaman = _namaTanamanController.text;
+                String codeAPI = _codeAPIController.text;
+                String jumlahTanam = _jumlahTanamController.text;
+                print('Nama Tanaman: $namaTanaman');
+                print('Code API: $codeAPI');
+                print('Jumlah Tanam: $jumlahTanam');
+              },
+              child: Text('Simpan'),
+            ),
           ],
         ),
       ),
