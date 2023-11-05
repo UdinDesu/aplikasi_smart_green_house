@@ -62,7 +62,7 @@ class _DashboardPageState extends State<DashboardPage> {
               autoPlayInterval: Duration(seconds: 5),
               enlargeCenterPage: true,
               viewportFraction: 1.0,
-              aspectRatio: 16 / 9,
+              aspectRatio: 15 / 7,
             ),
           ),
           Container(
@@ -87,14 +87,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 0.8, // 80% of cell height
+                childAspectRatio: 1.0, // Adjust the aspect ratio as needed
                 children: [
                   BuildInfoBox(
                     "Suhu Ruangan",
                     'assets/icon/temp.png',
                     context,
                     Colors.black,
-                    "Suhu akan di tunjukan dalam satuan Celsius, suhu ini mencangkup 1 ruangan",
+                    "Suhu akan ditampilkan dalam satuan Celsius, suhu ini mencakup 1 ruangan",
                     Colors.white,
                   ),
                   BuildInfoBox(
@@ -102,7 +102,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     'assets/icon/light.png',
                     context,
                     Colors.black,
-                    "Intensitas Cahaya di tunjukan dalam satuan persen, Intensitas Cahaya ini mencangkup 1 ruangan",
+                    "Intensitas Cahaya ditampilkan dalam satuan persen, Intensitas Cahaya ini mencakup 1 ruangan",
                     Colors.white,
                   ),
                   BuildInfoBox(
@@ -110,7 +110,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     'assets/icon/soil.png',
                     context,
                     Colors.black,
-                    "Kelembapan di tunjukan dalam satuan persen, Kelembapan ini mencangkup 1 ruangan",
+                    "Kelembapan ditampilkan dalam satuan persen, Kelembapan ini mencakup 1 ruangan",
                     Colors.white,
                   ),
                   BuildInfoBox(
@@ -118,7 +118,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     'assets/icon/water.png',
                     context,
                     Colors.black,
-                    "Kadar air di tunjukkan dalam satuan persen, Kadar air ini mencangkup tanah yang berada di ruangan tersebut",
+                    "Kadar air ditampilkan dalam satuan persen, Kadar air ini mencakup tanah yang berada di ruangan tersebut",
                     Colors.white,
                   ),
                 ],
@@ -154,8 +154,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   Image.asset(
                     imagePath,
-                    width: 80.0,
-                    height: 80.0,
+                    width: 50.0, // Set the width of the image to 50 px
+                    height: 50.0, // Set the height of the image to 50 px
                   ),
                   SizedBox(height: 8.0),
                   Align(
@@ -195,92 +195,32 @@ class _DashboardPageState extends State<DashboardPage> {
               offset: Offset(4, 4),
             ),
           ],
-      Widget BuildInfoBox(
-      String title,
-      String imagePath,
-      BuildContext context,
-      Color textColor,
-      String detailInfo,
-      Color backgroundColor,
-    ) {
-      return GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(title),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      imagePath,
-                      width: 50.0, // Mengatur lebar gambar menjadi 50 px
-                      height: 50.0, // Mengatur tinggi gambar menjadi 50 px
-                    ),
-                    SizedBox(height: 8.0),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        detailInfo,
-                        style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Tutup'),
-                  ),
-                ],
-                backgroundColor: backgroundColor,
-              );
-            },
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.green,
-                blurRadius: 4,
-                offset: Offset(4, 4),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Image.asset(
-                  imagePath,
-                  width: 50.0, // Mengatur lebar gambar menjadi 50 px
-                  height: 50.0, // Mengatur tinggi gambar menjadi 50 px
-                ),
-              ),
-              SizedBox(height: 12.0),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ],
-          ),
         ),
-      );
-    }
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Image.asset(
+                imagePath,
+                width: 50.0, // Set the width of the image to 50 px
+                height: 50.0, // Set the height of the image to 50 px
+              ),
+            ),
+            SizedBox(height: 12.0),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

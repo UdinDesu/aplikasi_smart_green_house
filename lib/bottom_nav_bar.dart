@@ -16,11 +16,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.menu),
-          label: 'Menu',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
+          label: 'Kontrol',
         ),
       ],
       currentIndex: currentIndex,
