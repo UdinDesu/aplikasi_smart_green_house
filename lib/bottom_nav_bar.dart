@@ -32,9 +32,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/menu');
             break;
           case 2:
-          // Navigasi ke halaman 'SettingsPage'
-            Navigator.pushReplacementNamed(context, '/settings');
-            break;
         }
       },
     );
