@@ -25,8 +25,9 @@ class MenuPageApp extends StatefulWidget {
 }
 
 class _MenuPageAppState extends State<MenuPageApp> {
-  final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
-  String firebaseData = "Loading...";
+  int _selectedIndex = 0;
+  double temp = 0.0;
+  double hum = 0.0;
 
   @override
   void initState() {
@@ -37,7 +38,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
       if (event.snapshot.value != null) {
         final dynamic data = event.snapshot.value;
         setState(() {
-          firebaseData = "Temp: ${data['temp'] ?? 0.0}, Humidity: ${data['humidity'] ?? 0.0}";
+          temp = (data['Suhu'] as double?) ?? 0.0;
+          hum = (data['Kelembaban'] as double?) ?? 0.0;
         });
       }
     });
@@ -51,9 +53,31 @@ class _MenuPageAppState extends State<MenuPageApp> {
         title: Text('Kontrol Perangkat'),
       ),
       body: Center(
-        child: Text(
-          'Data dari Firebase: $firebaseData',
-          style: TextStyle(fontSize: 18),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Suhu: $temp °C',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 19,
+                fontFamily: 'Times New Roman',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
+            SizedBox(height: 16), // Menambahkan jarak vertikal
+            Text(
+              'Kelembaban: $hum %',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 19,
+                fontFamily: 'Times New Roman',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
