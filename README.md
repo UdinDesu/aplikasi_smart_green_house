@@ -11,6 +11,5 @@ Smart Greenhouse merupakan aplikasi berbasis IoT yang berfokus pada pengecekan s
 ## Fitur Utama
 Didalam aplikasi ini, pengguna dapat melakukan monitoring dan kontrol terhadap kondisi yang berada di Smart Green House, hal hal yang bisa di monitoring dan di kontrol adalah
 - Suhu Ruangan
-- Intensitas Cahaya
-- Kadar Air
+- Kontrol Lampu
 - Kelembapan Tanah
