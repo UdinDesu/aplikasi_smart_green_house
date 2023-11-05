@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "518456025074",
+    "project_id": "aplikasi-smart-green-house",
+    "storage_bucket": "aplikasi-smart-green-house.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518456025074:android:c33fec0f36b490c8e6956b",
+        "android_client_info": {
+          "package_name": "com.example.aplikasi_smart_green_house"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm7bGA-6VT41H3b_kMhFe-womEJfRTMgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

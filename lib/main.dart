@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SplashScreen(), // Rute halaman utama
         '/dashboard': (context) => DashboardPage(), // Rute dashboard
-        '/menu': (context) => MenuPage(), // Rute menu
+        '/menu': (context) => MenuPageApp(), // Rute menu
        // '/settings': (context) => SettingsPage(), // Rute settings
       },
       initialRoute: '/', // Rute awal saat aplikasi dimulai

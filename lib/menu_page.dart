@@ -1,64 +1,63 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
-import 'add_menu.dart';
-import 'bottom_nav_bar.dart'; // Import file bottom_nav_bar.dart
+import 'bottom_nav_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: "AIzaSyAm7bGA-6VT41H3b_kMhFe-womEJfRTMgU",
+      appId: "1:518456025074:android:c33fec0f36b490c8e6956b",
+      messagingSenderId: "518456025074",
+      projectId: "aplikasi-smart-green-house",
+      storageBucket: "dht11",
+      databaseURL: "https://aplikasi-smart-green-house-default-rtdb.firebaseio.com/",
+    ),
+  );
   runApp(MenuPageApp());
 }
 
-class MenuPageApp extends StatelessWidget {
+class MenuPageApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MenuPage(),
-      routes: {
-        '/add_menu': (context) => AddMenuApp(),
-      },
-      onUnknownRoute: (settings) {
-        return MaterialPageRoute(
-          builder: (context) => NotFoundPage(),
-        );
-      },
-    );
-  }
+  _MenuPageAppState createState() => _MenuPageAppState();
 }
 
-class MenuPage extends StatelessWidget {
+class _MenuPageAppState extends State<MenuPageApp> {
+  final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+  String firebaseData = "Loading...";
+
+  @override
+  void initState() {
+    super.initState();
+    DatabaseReference _firebaseRef = FirebaseDatabase.instance.reference();
+
+    _firebaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        final dynamic data = event.snapshot.value;
+        setState(() {
+          firebaseData = "Temp: ${data['temp'] ?? 0.0}, Humidity: ${data['humidity'] ?? 0.0}";
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E420D),
-        title: Text('Menu'),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'add',
-                  child: Text('Add'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'select',
-                  child: Text('Select'),
-                ),
-              ];
-            },
-            onSelected: (value) {
-              if (value == 'add') {
-                Navigator.pushNamed(context, '/add_menu');
-              } else if (value == 'select') {
-                // Handle Select action
-              }
-            },
-          ),
-        ],
+        title: Text('Kontrol Perangkat'),
       ),
-      body: Container(), // Tambahkan konten menu di sini
-      bottomNavigationBar: CustomBottomNavigationBar( // Tambahkan bottom navigation bar
-        currentIndex: 1, // Index 1 sesuai dengan Menu
+      body: Center(
+        child: Text(
+          'Data dari Firebase: $firebaseData',
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacement(
