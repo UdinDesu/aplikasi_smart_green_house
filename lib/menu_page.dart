@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
 import 'bottom_nav_bar.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
 import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: "AIzaSyAm7bGA-6VT41H3b_kMhFe-womEJfRTMgU",
-      appId: "1:518456025074:android:c33fec0f36b490c8e6956b",
-      messagingSenderId: "518456025074",
-      projectId: "aplikasi-smart-green-house",
-      storageBucket: "dht11",
-      databaseURL: "https://aplikasi-smart-green-house-default-rtdb.firebaseio.com/",
-    ),
+  await Firebase.initializeApp( // Initialize Firebase with FirebaseOptions
+      options: FirebaseOptions(
+        apiKey: "AIzaSyAm7bGA-6VT41H3b_kMhFe-womEJfRTMgU",
+        appId: "1:518456025074:android:c33fec0f36b490c8e6956b",
+        messagingSenderId: "518456025074",
+        projectId: "aplikasi-smart-green-house",
+        storageBucket: "dht11",
+        databaseURL: "https://aplikasi-smart-green-house-default-rtdb.firebaseio.com/",
+      )
   );
   runApp(MenuPageApp());
 }
