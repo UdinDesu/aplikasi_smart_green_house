@@ -14,12 +14,13 @@ class MyApp extends StatelessWidget {
     // Inisialisasi Firebase dengan FirebaseOptions
     Firebase.initializeApp(
       options: FirebaseOptions(
-        apiKey: "AIzaSyAm7bGA-6VT41H3b_kMhFe-womEJfRTMgU",
-        appId: "1:518456025074:android:c33fec0f36b490c8e6956b",
-        messagingSenderId: "518456025074",
-        projectId: "aplikasi-smart-green-house",
-        storageBucket: "dht11",
-        databaseURL: "https://aplikasi-smart-green-house-default-rtdb.firebaseio.com/",
+        apiKey: 'AIzaSyAsflovMFBOYAI4dIKk7SWhKprlkN_ArNY',
+        appId: '1:518456025074:web:d68350e7112da44ee6956b',
+        messagingSenderId: '518456025074',
+        projectId: 'aplikasi-smart-green-house',
+        authDomain: 'aplikasi-smart-green-house.firebaseapp.com',
+        databaseURL: 'https://aplikasi-smart-green-house-default-rtdb.firebaseio.com',
+        storageBucket: 'aplikasi-smart-green-house.appspot.com',
       ),
     );
 
