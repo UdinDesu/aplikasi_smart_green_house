@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: 'YOUR_API_KEY',
+      appId: 'YOUR_APP_ID',
+      messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+      projectId: 'YOUR_PROJECT_ID',
+      authDomain: 'YOUR_AUTH_DOMAIN',
+      databaseURL: 'YOUR_DATABASE_URL',
+      storageBucket: 'YOUR_STORAGE_BUCKET',
+    ),
+  );
+  runApp(LEDControlApp());
+}
+
+class LEDControlApp extends StatefulWidget {
+  @override
+  _LEDControlAppState createState() => _LEDControlAppState();
+}
+
+class _LEDControlAppState extends State<LEDControlApp> {
+  int _ledStatus = 0; // Awalnya LED dimatikan
+
+  DatabaseReference _firebaseRef = FirebaseDatabase.instance.reference();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Membaca status LED dari Firebase saat aplikasi diinisialisasi
+    _firebaseRef.child("LED").once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        setState(() {
+          _ledStatus = snapshot.value;
+        });
+      }
+    });
+  }
+
+  // Fungsi untuk mengubah status LED di Firebase
+  void _toggleLED() {
+    setState(() {
+      // Memastikan LED berubah antara 0 dan 1
+      _ledStatus = (_ledStatus == 0) ? 1 : 0;
+    });
+
+    // Mengirim perubahan status LED ke Firebase
+    _firebaseRef.update({"LED": _ledStatus});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Control LED'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Status LED: ${_ledStatus == 1 ? 'Nyala' : 'Mati'}',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _toggleLED,
+                child: Text(_ledStatus == 1 ? 'Matikan LED' : 'Nyalakan LED'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
