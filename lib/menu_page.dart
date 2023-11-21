@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
 import 'bottom_nav_bar.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
@@ -27,8 +27,28 @@ class MenuPageApp extends StatefulWidget {
 
 class _MenuPageAppState extends State<MenuPageApp> {
   int _selectedIndex = 0;
-  double temp = 0.0;
-  double hum = 0.0;
+  double suhuRuangan = 0.0;
+  double kelembapanRuangan = 0.0;
+  int kelembapanTanah = 0;
+  String statusRelay = 'OFF';
+  bool isLed1On = true;
+
+  final DatabaseReference led1Reference =
+  FirebaseDatabase.instance.reference().child('Status_Lampu');
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _toggleLed1() {
+    setState(() {
+      isLed1On = !isLed1On;
+    });
+
+    led1Reference.set(isLed1On ? 'ON' : 'OFF');
+  }
 
   @override
   void initState() {
@@ -39,8 +59,10 @@ class _MenuPageAppState extends State<MenuPageApp> {
       if (event.snapshot.value != null) {
         final dynamic data = event.snapshot.value;
         setState(() {
-          temp = (data['Suhu'] as double?) ?? 0.0;
-          hum = (data['Kelembaban'] as double?) ?? 0.0;
+          suhuRuangan = (data['Suhu_ruangan'] as double?) ?? 0.0;
+          kelembapanRuangan = (data['Kelembapan_ruangan'] as double?) ?? 0.0;
+          kelembapanTanah = (data['Kelembapan_tanah'] as int?) ?? 0;
+          statusRelay = data['Status_relay'] ?? 'OFF';
         });
       }
     });
@@ -49,37 +71,48 @@ class _MenuPageAppState extends State<MenuPageApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E420D),
         title: Text('Kontrol Perangkat'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Suhu: $temp °C',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontFamily: 'Times New Roman',
-                fontWeight: FontWeight.w400,
-                height: 0,
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          buildDataItem('Suhu Ruangan', '$suhuRuangan °C'),
+          buildDataItem('Kelembapan Ruangan', '$kelembapanRuangan %'),
+          buildDataItem('Kelembapan Tanah', '$kelembapanTanah %'),
+          buildDataItem('Status Relay', statusRelay),
+          GestureDetector(
+            onTap: _toggleLed1,
+            child: Container(
+              width: double.infinity,
+              height: 40,
+              margin: EdgeInsets.only(top: 16),
+              decoration: BoxDecoration(
+                color: isLed1On ? Colors.green : Colors.red,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  isLed1On ? 'ON' : 'OFF',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: 16), // Menambahkan jarak vertikal
-            Text(
-              'Kelembaban: $hum %',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontFamily: 'Times New Roman',
-                fontWeight: FontWeight.w400,
-                height: 0,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 1,
@@ -109,6 +142,46 @@ class _MenuPageAppState extends State<MenuPageApp> {
             // Handle Settings
           }
         },
+      ),
+    );
+  }
+
+  Widget buildDataItem(String title, String value) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.green.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
       ),
     );
   }
