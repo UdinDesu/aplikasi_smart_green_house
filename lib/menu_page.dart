@@ -41,19 +41,31 @@ class _MenuPageAppState extends State<MenuPageApp> {
   DatabaseReference? _firebaseRelayRef;
   bool _isDisposed = false;
 
-  final DatabaseReference led1Reference = FirebaseDatabase.instance.reference().child('Status').child('Lampu');
+  final DatabaseReference led1Reference = FirebaseDatabase.instance.reference()
+      .child('Status')
+      .child('Lampu');
+
+  double kalibrasiSensorTanah = 0.0;
+  double kalibrasiSensorSuhu = 0.0;
+
+  TextEditingController kalibrasiSensorTanahController = TextEditingController();
+  TextEditingController kalibrasiSensorSuhuController = TextEditingController();
 
   void _updateSensorData(dynamic data) {
     setState(() {
       suhuRuangan = (data['Suhu_ruangan'] as num?)?.toDouble() ?? 0.0;
-      kelembapanRuangan = (data['Kelembapan_ruangan'] as num?)?.toDouble() ?? 0.0;
+      kelembapanRuangan =
+          (data['Kelembapan_ruangan'] as num?)?.toDouble() ?? 0.0;
       kelembapanTanah = (data['Kelembapan_tanah'] as num?)?.toInt() ?? 0;
+      kalibrasiSensorTanah =
+          (data['Kalibrasi_sensor_tanah'] as num?)?.toDouble() ?? 0.0;
+      kalibrasiSensorSuhu =
+          (data['Kalibrasi_sensor_suhu'] as num?)?.toDouble() ?? 0.0;
     });
   }
 
   void _updateRelayStatus(dynamic data) {
     setState(() {
-      // Menggunakan DatabaseReference terpisah untuk relay
       statusRelay1 = (data['Pompa'] as String?) ?? 'OFF';
       statusRelay2 = (data['Kipas'] as String?) ?? 'OFF';
     });
@@ -63,17 +75,13 @@ class _MenuPageAppState extends State<MenuPageApp> {
   void initState() {
     super.initState();
 
-    // DatabaseReference untuk sensor
     _firebaseSensorRef = FirebaseDatabase.instance.reference().child('Sensor');
-    // DatabaseReference terpisah untuk relay
     _firebaseRelayRef = FirebaseDatabase.instance.reference().child('Status');
 
     _firebaseSensorRef?.onValue.listen((event) {
       if (!_isDisposed) {
         if (event.snapshot.value != null) {
           final dynamic data = event.snapshot.value;
-
-          // Memanggil metode terpisah untuk memproses sensor
           _updateSensorData(data);
         }
       }
@@ -83,8 +91,6 @@ class _MenuPageAppState extends State<MenuPageApp> {
       if (!_isDisposed) {
         if (event.snapshot.value != null) {
           final dynamic data = event.snapshot.value;
-
-          // Memanggil metode terpisah untuk memproses relay
           _updateRelayStatus(data);
         }
       }
@@ -113,18 +119,26 @@ class _MenuPageAppState extends State<MenuPageApp> {
 
   void _sendTimeData() {
     try {
-      // Menggabungkan nilai jam dan menit menjadi satu nilai untuk kedua lampu
       String waktuHidup = '${lampuHidup.hour}:${lampuHidup.minute}';
       String waktuMati = '${lampuMati.hour}:${lampuMati.minute}';
 
-      // Kirim data ke Firebase
       FirebaseDatabase.instance.reference().child('Waktu').set({
         'Hidup': waktuHidup,
         'Mati': waktuMati,
       });
     } catch (error) {
       print("Error sending time data: $error");
-      // Handle error accordingly, e.g., show an error message
+    }
+  }
+
+  void _sendCalibrationData() {
+    try {
+      FirebaseDatabase.instance.reference().child('Sensor').update({
+        'Kalibrasi_sensor_tanah': kalibrasiSensorTanah,
+        'Kalibrasi_sensor_suhu': kalibrasiSensorSuhu,
+      });
+    } catch (error) {
+      print("Error sending calibration data: $error");
     }
   }
 
@@ -142,6 +156,18 @@ class _MenuPageAppState extends State<MenuPageApp> {
           buildDataItem('Suhu Ruangan', '$suhuRuangan °C'),
           buildDataItem('Kelembapan Ruangan', '$kelembapanRuangan %'),
           buildDataItem('Kelembapan Tanah', '$kelembapanTanah'),
+          buildDataItem(
+            'Kalibrasi Sensor Tanah',
+            '$kalibrasiSensorTanah',
+            isEditable: true,
+            controller: kalibrasiSensorTanahController,
+          ),
+          buildDataItem(
+            'Kalibrasi Sensor Suhu',
+            '$kalibrasiSensorSuhu',
+            isEditable: true,
+            controller: kalibrasiSensorSuhuController,
+          ),
           buildDataItem('Status Pompa', statusRelay1),
           buildDataItem('Status Kipas', statusRelay2),
           GestureDetector(
@@ -155,7 +181,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: isLed1On ? Colors.green.withOpacity(0.5) : Colors.red.withOpacity(0.5),
+                    color: isLed1On ? Colors.green.withOpacity(0.5) : Colors.red
+                        .withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
                     offset: Offset(0, 3),
@@ -182,7 +209,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                     TimeOfDay? selectedTime = await showTimePicker(
                       context: context,
                       initialTime: lampuHidup,
-                      initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                      initialEntryMode: TimePickerEntryMode.dial,
                     );
                     if (selectedTime != null) {
                       setState(() {
@@ -209,7 +236,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         TimeOfDay? selectedTime = await showTimePicker(
                           context: context,
                           initialTime: lampuHidup,
-                          initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                          initialEntryMode: TimePickerEntryMode.dial,
                         );
                         if (selectedTime != null) {
                           setState(() {
@@ -218,7 +245,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         }
                       },
                       controller: TextEditingController(
-                        text: '${lampuHidup.hour}:${lampuHidup.minute.toString().padLeft(2, '0')}', // Display in 24-hour format
+                        text: '${lampuHidup.hour}:${lampuHidup.minute.toString()
+                            .padLeft(2, '0')}',
                       ),
                     ),
                   ),
@@ -231,7 +259,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                     TimeOfDay? selectedTime = await showTimePicker(
                       context: context,
                       initialTime: lampuMati,
-                      initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                      initialEntryMode: TimePickerEntryMode.dial,
                     );
                     if (selectedTime != null) {
                       setState(() {
@@ -258,7 +286,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         TimeOfDay? selectedTime = await showTimePicker(
                           context: context,
                           initialTime: lampuMati,
-                          initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                          initialEntryMode: TimePickerEntryMode.dial,
                         );
                         if (selectedTime != null) {
                           setState(() {
@@ -267,7 +295,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         }
                       },
                       controller: TextEditingController(
-                        text: '${lampuMati.hour}:${lampuMati.minute.toString().padLeft(2, '0')}', // Display in 24-hour format
+                        text: '${lampuMati.hour}:${lampuMati.minute.toString()
+                            .padLeft(2, '0')}',
                       ),
                     ),
                   ),
@@ -275,14 +304,12 @@ class _MenuPageAppState extends State<MenuPageApp> {
               ),
             ],
           ),
-
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: _sendTimeData,
             style: ElevatedButton.styleFrom(
-              primary: Colors.green, // Warna latar belakang tombol
+              primary: Colors.green,
               elevation: 5,
-              // Spread Radius, Blur Radius, dan Offset juga dapat diatur sesuai kebutuhan
               shadowColor: Colors.green.withOpacity(0.5),
             ).copyWith(
               backgroundColor: MaterialStateProperty.resolveWith<Color?>(
@@ -291,7 +318,6 @@ class _MenuPageAppState extends State<MenuPageApp> {
                 },
               ),
               elevation: MaterialStateProperty.resolveWith<double?>((_) => 5),
-              // Spread Radius, Blur Radius, dan Offset juga dapat diatur sesuai kebutuhan
               shadowColor: MaterialStateProperty.resolveWith<Color?>(
                     (Set<MaterialState> states) {
                   return Colors.green.withOpacity(0.5);
@@ -300,10 +326,33 @@ class _MenuPageAppState extends State<MenuPageApp> {
             ),
             child: Text(
               'Kirim Waktu ke Firebase',
-              style: TextStyle(color: Colors.white), // Warna teks tombol
+              style: TextStyle(color: Colors.white),
             ),
           ),
-
+          ElevatedButton(
+            onPressed: _sendCalibrationData,
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+              elevation: 5,
+              shadowColor: Colors.green.withOpacity(0.5),
+            ).copyWith(
+              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  return Colors.green;
+                },
+              ),
+              elevation: MaterialStateProperty.resolveWith<double?>((_) => 5),
+              shadowColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  return Colors.green.withOpacity(0.5);
+                },
+              ),
+            ),
+            child: Text(
+              'Kirim Kalibrasi ke Firebase',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -315,11 +364,13 @@ class _MenuPageAppState extends State<MenuPageApp> {
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
                     DashboardApp(),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                transitionsBuilder: (context, animation, secondaryAnimation,
+                    child) {
                   const begin = Offset(-1.0, 0.0);
                   const end = Offset.zero;
                   const curve = Curves.easeInOut;
-                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                  var tween = Tween(begin: begin, end: end).chain(
+                      CurveTween(curve: curve));
                   var offsetAnimation = animation.drive(tween);
 
                   return SlideTransition(
@@ -338,7 +389,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
     );
   }
 
-  Widget buildDataItem(String title, String value) {
+  Widget buildDataItem(String title, String value,
+      {bool isEditable = false, TextEditingController? controller}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       padding: EdgeInsets.all(16),
@@ -373,6 +425,36 @@ class _MenuPageAppState extends State<MenuPageApp> {
               fontSize: 14,
             ),
           ),
+          // Jika isEditable adalah true, tampilkan TextField untuk input kalibrasi
+          if (isEditable)
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: 'Masukkan nilai',
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+              onChanged: (newValue) {
+                // Update nilai kalibrasi saat pengguna memasukkan input
+                setState(() {
+                  if (title == 'Kalibrasi Sensor Tanah') {
+                    kalibrasiSensorTanah = double.tryParse(newValue) ?? 0.0;
+                  } else if (title == 'Kalibrasi Sensor Suhu') {
+                    kalibrasiSensorSuhu = double.tryParse(newValue) ?? 0.0;
+                  }
+                });
+
+                // Panggil fungsi untuk mengirim data ke Firebase
+                _sendCalibrationData();
+              },
+            ),
+
         ],
       ),
     );
