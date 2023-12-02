@@ -30,7 +30,9 @@ class _MenuPageAppState extends State<MenuPageApp> {
   double suhuRuangan = 0.0;
   double kelembapanRuangan = 0.0;
   int kelembapanTanah = 0;
-  String statusRelay = 'OFF';
+  String statusRelay1 = 'OFF';
+  String statusRelay2 = 'OFF';
+  String statusRelay3 = 'OFF';
   bool isLed1On = true;
   TimeOfDay lampuHidup = TimeOfDay.now();
   TimeOfDay lampuMati = TimeOfDay.now();
@@ -52,7 +54,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
   void _updateRelayStatus(dynamic data) {
     setState(() {
       // Menggunakan DatabaseReference terpisah untuk relay
-      statusRelay = (data['Relay'] as String?) ?? 'OFF';
+      statusRelay1 = (data['Pompa'] as String?) ?? 'OFF';
+      statusRelay2 = (data['Kipas'] as String?) ?? 'OFF';
     });
   }
 
@@ -88,8 +91,6 @@ class _MenuPageAppState extends State<MenuPageApp> {
     });
   }
 
-
-
   @override
   void dispose() {
     _isDisposed = true;
@@ -112,19 +113,14 @@ class _MenuPageAppState extends State<MenuPageApp> {
 
   void _sendTimeData() {
     try {
-      // Mengambil nilai jam dan menit untuk kedua lampu
-      int jamHidup = lampuHidup.hour;
-      int menitHidup = lampuHidup.minute;
-
-      int jamMati = lampuMati.hour;
-      int menitMati = lampuMati.minute;
+      // Menggabungkan nilai jam dan menit menjadi satu nilai untuk kedua lampu
+      String waktuHidup = '${lampuHidup.hour}:${lampuHidup.minute}';
+      String waktuMati = '${lampuMati.hour}:${lampuMati.minute}';
 
       // Kirim data ke Firebase
       FirebaseDatabase.instance.reference().child('Waktu').set({
-        'JamHidup': jamHidup,
-        'MenitHidup': menitHidup,
-        'JamMati': jamMati,
-        'MenitMati': menitMati,
+        'Hidup': waktuHidup,
+        'Mati': waktuMati,
       });
     } catch (error) {
       print("Error sending time data: $error");
@@ -146,7 +142,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
           buildDataItem('Suhu Ruangan', '$suhuRuangan °C'),
           buildDataItem('Kelembapan Ruangan', '$kelembapanRuangan %'),
           buildDataItem('Kelembapan Tanah', '$kelembapanTanah'),
-          buildDataItem('Status Relay', statusRelay),
+          buildDataItem('Status Pompa', statusRelay1),
+          buildDataItem('Status Kipas', statusRelay2),
           GestureDetector(
             onTap: _toggleLed1,
             child: Container(
@@ -185,6 +182,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                     TimeOfDay? selectedTime = await showTimePicker(
                       context: context,
                       initialTime: lampuHidup,
+                      initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
                     );
                     if (selectedTime != null) {
                       setState(() {
@@ -207,8 +205,20 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         ),
                       ),
                       readOnly: true,
+                      onTap: () async {
+                        TimeOfDay? selectedTime = await showTimePicker(
+                          context: context,
+                          initialTime: lampuHidup,
+                          initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                        );
+                        if (selectedTime != null) {
+                          setState(() {
+                            lampuHidup = selectedTime;
+                          });
+                        }
+                      },
                       controller: TextEditingController(
-                        text: lampuHidup.format(context),
+                        text: '${lampuHidup.hour}:${lampuHidup.minute.toString().padLeft(2, '0')}', // Display in 24-hour format
                       ),
                     ),
                   ),
@@ -221,6 +231,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
                     TimeOfDay? selectedTime = await showTimePicker(
                       context: context,
                       initialTime: lampuMati,
+                      initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
                     );
                     if (selectedTime != null) {
                       setState(() {
@@ -243,8 +254,20 @@ class _MenuPageAppState extends State<MenuPageApp> {
                         ),
                       ),
                       readOnly: true,
+                      onTap: () async {
+                        TimeOfDay? selectedTime = await showTimePicker(
+                          context: context,
+                          initialTime: lampuMati,
+                          initialEntryMode: TimePickerEntryMode.dial, // Set 24-hour format
+                        );
+                        if (selectedTime != null) {
+                          setState(() {
+                            lampuMati = selectedTime;
+                          });
+                        }
+                      },
                       controller: TextEditingController(
-                        text: lampuMati.format(context),
+                        text: '${lampuMati.hour}:${lampuMati.minute.toString().padLeft(2, '0')}', // Display in 24-hour format
                       ),
                     ),
                   ),
@@ -252,6 +275,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
               ),
             ],
           ),
+
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: _sendTimeData,
