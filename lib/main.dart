@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'splash_screen.dart';
-import 'dashboard_page.dart';
-import 'menu_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +30,6 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => SplashScreen(),
-        '/dashboard': (context) => DashboardPage(),
-        '/menu': (context) => MenuPageApp(),
       },
       initialRoute: '/',
     );
