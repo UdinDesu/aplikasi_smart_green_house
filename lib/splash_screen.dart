@@ -1,6 +1,7 @@
+import 'package:aplikasi_smart_green_house/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dashboard_page.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                DashboardPage(),
+                MenuPageApp(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = 0.0;

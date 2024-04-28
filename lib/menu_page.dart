@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
-import 'bottom_nav_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -125,6 +124,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
       FirebaseDatabase.instance.reference().child('Waktu').set({
         'Hidup': waktuHidup,
         'Mati': waktuMati,
+      }).then((_) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MenuPageApp()));
       });
     } catch (error) {
       print("Error sending time data: $error");
@@ -136,6 +137,8 @@ class _MenuPageAppState extends State<MenuPageApp> {
       FirebaseDatabase.instance.reference().child('Sensor').update({
         'Kalibrasi_sensor_tanah': kalibrasiSensorTanah,
         'Kalibrasi_sensor_suhu': kalibrasiSensorSuhu,
+      }).then((_) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MenuPageApp()));
       });
     } catch (error) {
       print("Error sending calibration data: $error");
@@ -163,7 +166,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
             controller: kalibrasiSensorTanahController,
           ),
           buildDataItem(
-            'Kalibrasi Sensor Suhu',
+            'Kalibrasi Sensor Ruangan',
             '$kalibrasiSensorSuhu',
             isEditable: true,
             controller: kalibrasiSensorSuhuController,
@@ -306,7 +309,10 @@ class _MenuPageAppState extends State<MenuPageApp> {
           ),
           SizedBox(height: 16),
           ElevatedButton(
-            onPressed: _sendTimeData,
+            onPressed: () {
+              _sendTimeData();
+              _sendCalibrationData();
+            },
             style: ElevatedButton.styleFrom(
               primary: Colors.green,
               elevation: 5,
@@ -325,66 +331,11 @@ class _MenuPageAppState extends State<MenuPageApp> {
               ),
             ),
             child: Text(
-              'Kirim Waktu ke Firebase',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _sendCalibrationData,
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
-              elevation: 5,
-              shadowColor: Colors.green.withOpacity(0.5),
-            ).copyWith(
-              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  return Colors.green;
-                },
-              ),
-              elevation: MaterialStateProperty.resolveWith<double?>((_) => 5),
-              shadowColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  return Colors.green.withOpacity(0.5);
-                },
-              ),
-            ),
-            child: Text(
-              'Kirim Kalibrasi ke Firebase',
+              'Apply Changes',
               style: TextStyle(color: Colors.white),
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    DashboardApp(),
-                transitionsBuilder: (context, animation, secondaryAnimation,
-                    child) {
-                  const begin = Offset(-1.0, 0.0);
-                  const end = Offset.zero;
-                  const curve = Curves.easeInOut;
-                  var tween = Tween(begin: begin, end: end).chain(
-                      CurveTween(curve: curve));
-                  var offsetAnimation = animation.drive(tween);
-
-                  return SlideTransition(
-                    position: offsetAnimation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 500),
-              ),
-            );
-          } else if (index == 2) {
-            // Handle Settings
-          }
-        },
       ),
     );
   }
@@ -430,6 +381,7 @@ class _MenuPageAppState extends State<MenuPageApp> {
             TextField(
               controller: controller,
               keyboardType: TextInputType.number,
+              style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 labelText: 'Masukkan nilai',
                 labelStyle: TextStyle(color: Colors.black),
@@ -445,13 +397,10 @@ class _MenuPageAppState extends State<MenuPageApp> {
                 setState(() {
                   if (title == 'Kalibrasi Sensor Tanah') {
                     kalibrasiSensorTanah = double.tryParse(newValue) ?? 0.0;
-                  } else if (title == 'Kalibrasi Sensor Suhu') {
+                  } else if (title == 'Kalibrasi Sensor Ruangan') {
                     kalibrasiSensorSuhu = double.tryParse(newValue) ?? 0.0;
                   }
                 });
-
-                // Panggil fungsi untuk mengirim data ke Firebase
-                _sendCalibrationData();
               },
             ),
 
